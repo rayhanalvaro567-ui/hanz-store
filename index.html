@@ -1,0 +1,793 @@
+```html
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GadgetZone - Toko HP Online Terlengkap</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar for better UX */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-full font-sans text-slate-800 antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- NAVBAR HEADER -->
+    <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 gap-4">
+                
+                <!-- Logo & Brand Name -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="resetFilters()">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/30">
+                        <i class="fa-solid font-bold fa-mobile-screen-button text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">GadgetZone</h1>
+                        <p class="text-[10px] text-slate-400 font-medium leading-none">Jual Beli HP Resmi</p>
+                    </div>
+                </div>
+
+                <!-- Search Bar (Desktop) -->
+                <div class="hidden md:flex flex-1 max-w-md mx-4 relative">
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Cari tipe, brand (iPhone, Samsung, Xiaomi)..." class="w-full pl-10 pr-4 py-2 text-sm bg-slate-100 border border-transparent rounded-full focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-sm"></i>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button onclick="openModal('paymentModal')" class="inline-flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+                        <i class="fa-solid fa-wallet text-blue-600"></i>
+                        <span>Info Pembayaran</span>
+                    </button>
+                    <button onclick="openModal('adminModal')" class="inline-flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm shadow-blue-500/20 transition-all active:scale-95">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span class="hidden sm:inline">Kelola Etalase</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Bar Mobile -->
+            <div class="pb-3 md:hidden">
+                <div class="relative">
+                    <input type="text" id="searchInputMobile" oninput="handleSearchMobile()" placeholder="Cari tipe HP atau merek..." class="w-full pl-10 pr-4 py-2 text-sm bg-slate-100 border border-transparent rounded-xl focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO / BANNER SECTION -->
+    <section class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white py-8 sm:py-12 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-2xl">
+                <span class="px-3 py-1 text-xs font-semibold bg-blue-500/20 text-blue-300 rounded-full border border-blue-500/30">Garansi Resmi & Terpercaya</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mt-3 mb-2">Temukan Smartphone Impian Anda</h2>
+                <p class="text-slate-300 text-sm sm:text-base">Dapatkan HP dengan harga terbaik, pengiriman cepat, dan proses pembayaran yang teraman via WhatsApp.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Filter Category Tabs & Counter -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none" id="brandFilters">
+                <!-- Dynamic Filter Buttons injected here -->
+            </div>
+            <div class="text-xs text-slate-500 font-medium">
+                Menampilkan <span id="productCount" class="font-bold text-slate-800">0</span> produk
+            </div>
+        </div>
+
+        <!-- PRODUCT GRID CONTAINER -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Product Cards injected via JavaScript -->
+        </div>
+
+        <!-- EMPTY STATE (Shows when no product found) -->
+        <div id="emptyState" class="hidden py-16 text-center">
+            <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+                <i class="fa-solid fa-box-open text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-700">Produk Tidak Ditemukan</h3>
+            <p class="text-sm text-slate-500 mt-1">Coba kata kunci lain atau tambah produk baru melalui panel etalase.</p>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </div>
+                        <span class="font-bold text-slate-800">GadgetZone</span>
+                    </div>
+                    <p class="text-xs text-slate-500 leading-relaxed">Penyedia layanan jual beli smartphone second dan baru berkualitas dengan garansi terpercaya di Indonesia.</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-slate-800 mb-3">Metode Pembayaran Supported</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 text-xs bg-slate-100 rounded text-slate-600 font-medium">BCA</span>
+                        <span class="px-2 py-1 text-xs bg-slate-100 rounded text-slate-600 font-medium">BRI</span>
+                        <span class="px-2 py-1 text-xs bg-slate-100 rounded text-slate-600 font-medium">Mandiri</span>
+                        <span class="px-2 py-1 text-xs bg-slate-100 rounded text-slate-600 font-medium">BJB</span>
+                        <span class="px-2 py-1 text-xs bg-slate-100 rounded text-slate-600 font-medium">DANA</span>
+                        <span class="px-2 py-1 text-xs bg-slate-100 rounded text-slate-600 font-medium">OVO</span>
+                        <span class="px-2 py-1 text-xs bg-slate-100 rounded text-slate-600 font-medium">QRIS</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-slate-800 mb-3">Hubungi Kami</h4>
+                    <p class="text-xs text-slate-500 mb-2"><i class="fa-brands fa-whatsapp text-emerald-500 mr-2 text-sm"></i> WhatsApp: +62 857-2376-9983</p>
+                    <p class="text-xs text-slate-500"><i class="fa-solid fa-clock text-blue-500 mr-2"></i> Jam Operasional: 08.00 - 21.00 WIB</p>
+                </div>
+            </div>
+            <div class="border-t border-slate-100 pt-4 text-center">
+                <p class="text-xs text-slate-400">&copy; 2026 GadgetZone Store. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL: PEMBAYARAN & REKENING -->
+    <div id="paymentModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('paymentModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-credit-card"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800">Informasi Pembayaran</h3>
+                    <p class="text-xs text-slate-500">Pilih metode transfer bank atau E-Wallet pilihan Anda</p>
+                </div>
+            </div>
+
+            <!-- E-Wallet Section -->
+            <div class="mb-6">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">E-Wallet & QRIS</h4>
+                <div class="space-y-2">
+                    <!-- DANA & OVO -->
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <span class="px-2 py-1 bg-blue-500 text-white font-bold text-[10px] rounded">DANA / OVO</span>
+                            <div>
+                                <p class="text-xs font-semibold text-slate-700">0857-2376-9983</p>
+                                <p class="text-[11px] text-slate-500">a.n GadgetZone Store</p>
+                            </div>
+                        </div>
+                        <button onclick="copyToClipboard('085723769983', 'Nomor E-Wallet')" class="text-xs text-blue-600 hover:bg-blue-50 px-2.5 py-1.5 rounded-lg border border-blue-200 font-medium transition-colors">
+                            <i class="fa-regular fa-copy mr-1"></i>Salin
+                        </button>
+                    </div>
+                    <!-- QRIS Placeholder Banner -->
+                    <div class="p-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-100 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-qrcode text-2xl text-emerald-600"></i>
+                            <div>
+                                <p class="text-xs font-bold text-slate-700">QRIS All Payment</p>
+                                <p class="text-[11px] text-slate-500">Mendukung Gopay, ShopeePay, LinkAja, dll</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-semibold bg-emerald-600 text-white px-2 py-0.5 rounded-full">Siap Scan</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transfer Bank Section -->
+            <div class="mb-6">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Transfer Bank</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <!-- BCA -->
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between items-center">
+                        <div>
+                            <span class="text-xs font-bold text-blue-700 block">BANK BCA</span>
+                            <span class="text-xs font-mono font-medium text-slate-700">8830192831</span>
+                            <p class="text-[10px] text-slate-400">a.n Admin Gadget</p>
+                        </div>
+                        <button onclick="copyToClipboard('8830192831', 'Rekening BCA')" class="text-xs text-slate-500 hover:text-blue-600 p-1.5">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- BRI -->
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between items-center">
+                        <div>
+                            <span class="text-xs font-bold text-blue-600 block">BANK BRI</span>
+                            <span class="text-xs font-mono font-medium text-slate-700">012301092817502</span>
+                            <p class="text-[10px] text-slate-400">a.n Admin Gadget</p>
+                        </div>
+                        <button onclick="copyToClipboard('012301092817502', 'Rekening BRI')" class="text-xs text-slate-500 hover:text-blue-600 p-1.5">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- Mandiri -->
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between items-center">
+                        <div>
+                            <span class="text-xs font-bold text-yellow-600 block">MANDIRI</span>
+                            <span class="text-xs font-mono font-medium text-slate-700">1370019283741</span>
+                            <p class="text-[10px] text-slate-400">a.n Admin Gadget</p>
+                        </div>
+                        <button onclick="copyToClipboard('1370019283741', 'Rekening Mandiri')" class="text-xs text-slate-500 hover:text-blue-600 p-1.5">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- BJB -->
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between items-center">
+                        <div>
+                            <span class="text-xs font-bold text-indigo-600 block">BANK BJB</span>
+                            <span class="text-xs font-mono font-medium text-slate-700">0091827364100</span>
+                            <p class="text-[10px] text-slate-400">a.n Admin Gadget</p>
+                        </div>
+                        <button onclick="copyToClipboard('0091827364100', 'Rekening BJB')" class="text-xs text-slate-500 hover:text-blue-600 p-1.5">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-3 rounded-xl border border-blue-100 text-xs text-blue-700 flex items-start gap-2">
+                <i class="fa-solid fa-circle-info mt-0.5"></i>
+                <span>Konfirmasikan bukti transfer Anda langsung melalui chat WhatsApp saat pemesanan untuk pemrosesan instan.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: KELOLA ETALASE / ADMIN MANAGEMENT -->
+    <div id="adminModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-xl relative max-h-[90vh] flex flex-col">
+            
+            <!-- Header Modal -->
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">Manajemen Etalase HP</h3>
+                        <p class="text-xs text-slate-500">Tambah produk baru atau hapus item dari katalog toko</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('adminModal')" class="text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Tab Switcher (Tambah / Daftar Hapus) -->
+            <div class="flex border-b border-slate-200 mt-4">
+                <button id="tabAddBtn" onclick="switchAdminTab('add')" class="px-4 py-2 text-xs sm:text-sm font-semibold border-b-2 border-blue-600 text-blue-600">
+                    <i class="fa-solid fa-plus mr-1.5"></i>Tambah HP Baru
+                </button>
+                <button id="tabManageBtn" onclick="switchAdminTab('manage')" class="px-4 py-2 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700">
+                    <i class="fa-solid fa-list-check mr-1.5"></i>Daftar & Hapus Produk
+                </button>
+            </div>
+
+            <!-- Body Modal Content -->
+            <div class="flex-1 overflow-y-auto py-4">
+                
+                <!-- TAB 1: FORM TAMBAH PRODUK -->
+                <form id="addProductForm" onsubmit="handleAddProduct(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nama / Tipe HP *</label>
+                            <input type="text" id="phoneName" required placeholder="Contoh: iPhone 15 Pro Max" class="w-full text-xs sm:text-sm p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Merek / Brand *</label>
+                            <select id="phoneBrand" required class="w-full text-xs sm:text-sm p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+                                <option value="Apple">Apple (iPhone)</option>
+                                <option value="Samsung">Samsung</option>
+                                <option value="Xiaomi">Xiaomi / Poco</option>
+                                <option value="Oppo">Oppo</option>
+                                <option value="Vivo">Vivo</option>
+                                <option value="Realme">Realme</option>
+                                <option value="Infinix">Infinix</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Harga (IDR Rp) *</label>
+                            <input type="number" id="phonePrice" required placeholder="Contoh: 15400000" class="w-full text-xs sm:text-sm p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Status Stok</label>
+                            <select id="phoneStock" class="w-full text-xs sm:text-sm p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+                                <option value="Tersedia">Tersedia (Ready)</option>
+                                <option value="Pre-Order">Pre-Order</option>
+                                <option value="Stok Menipis">Stok Menipis</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Spesifikasi Singkat *</label>
+                        <input type="text" id="phoneSpecs" required placeholder="Contoh: RAM 8GB, Internal 256GB, Chipset A17 Pro" class="w-full text-xs sm:text-sm p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">URL Gambar HP (Opsional)</label>
+                        <input type="url" id="phoneImage" placeholder="https://example.com/gambar.jpg (Kosongkan jika pakai default)" class="w-full text-xs sm:text-sm p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <span class="text-[11px] text-slate-400 mt-0.5 block">Jika dikosongkan, gambar otomatis akan digenerate secara estetik.</span>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-lg shadow-md shadow-blue-500/20 transition-all">
+                            <i class="fa-solid fa-plus-circle mr-1.5"></i> Simpan & Tambahkan ke Etalase
+                        </button>
+                    </div>
+                </form>
+
+                <!-- TAB 2: MANAGEMENT & DELETE LIST -->
+                <div id="manageProductsList" class="hidden space-y-3">
+                    <!-- Dynamic List of products with Delete Button injected here -->
+                </div>
+
+            </div>
+
+            <!-- Footer Modal Reset Button -->
+            <div class="pt-3 border-t border-slate-100 flex justify-between items-center">
+                <button onclick="resetDefaultData()" class="text-xs text-rose-500 hover:text-rose-700 font-medium">
+                    <i class="fa-solid fa-rotate-left mr-1"></i>Reset Data ke Default
+                </button>
+                <button onclick="closeModal('adminModal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg">
+                    Tutup
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // TARGET WHATSAPP NUMBER
+        const WA_NUMBER = "6285723769983";
+
+        // DEFAULT DATA HP INITIALIZATION
+        const defaultProducts = [
+            {
+                id: 1,
+                name: "iPhone 15 Pro Max",
+                brand: "Apple",
+                price: 21999000,
+                specs: "RAM 8GB | 256GB | Layar 6.7 OLED | Chipset A17 Pro",
+                stock: "Tersedia",
+                image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 2,
+                name: "Samsung Galaxy S24 Ultra",
+                brand: "Samsung",
+                price: 19499000,
+                specs: "RAM 12GB | 512GB | Kamera 200MP | Snapdragon 8 Gen 3",
+                stock: "Tersedia",
+                image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 3,
+                name: "Xiaomi 14 Ultra",
+                brand: "Xiaomi",
+                price: 12999000,
+                specs: "RAM 16GB | 512GB | Lensa Leica quad-cam | 120W Charging",
+                stock: "Stok Menipis",
+                image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 4,
+                name: "Oppo Find N3 Flip",
+                brand: "Oppo",
+                price: 14499000,
+                specs: "Layar Lipat AMOLED | RAM 12GB | 256GB | Triple Camera",
+                stock: "Tersedia",
+                image: "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 5,
+                name: "Vivo V30 Pro 5G",
+                brand: "Vivo",
+                price: 6999000,
+                specs: "RAM 12GB (+12GB Extended) | 512GB | Camera Zeiss Potrait",
+                stock: "Tersedia",
+                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 6,
+                name: "Realme GT 6 5G",
+                brand: "Realme",
+                price: 5499000,
+                specs: "Snapdragon 8s Gen 3 | RAM 12GB | 256GB | Layar 6000 nits",
+                stock: "Tersedia",
+                image: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=600&q=80"
+            }
+        ];
+
+        // GLOBAL APP STATE
+        let products = [];
+        let activeBrandFilter = 'Semua';
+        let searchQuery = '';
+
+        // INIT APP ON LOAD
+        window.onload = function() {
+            loadProductsFromStorage();
+            renderBrandFilters();
+            renderProducts();
+        };
+
+        // LOCALSTORAGE MANAGERS
+        function loadProductsFromStorage() {
+            const saved = localStorage.getItem('gadgetzone_products');
+            if (saved) {
+                try {
+                    products = JSON.parse(saved);
+                } catch (e) {
+                    products = [...defaultProducts];
+                }
+            } else {
+                products = [...defaultProducts];
+                saveProductsToStorage();
+            }
+        }
+
+        function saveProductsToStorage() {
+            localStorage.setItem('gadgetzone_products', JSON.stringify(products));
+        }
+
+        function resetDefaultData() {
+            if (confirm("Apakah Anda yakin ingin mengembalikan data ke daftar bawaan awal? Semua produk tambahan akan dihapus.")) {
+                products = [...defaultProducts];
+                saveProductsToStorage();
+                renderBrandFilters();
+                renderProducts();
+                renderManageList();
+                showToast("Data etalase berhasil direset ke default", "success");
+            }
+        }
+
+        // FORMAT CURRENCY TO IDR
+        function formatRupiah(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // RENDER BRAND FILTER BUTTONS
+        function renderBrandFilters() {
+            const brands = ['Semua', ...new Set(products.map(p => p.brand))];
+            const filterContainer = document.getElementById('brandFilters');
+            
+            filterContainer.innerHTML = brands.map(brand => {
+                const isActive = brand === activeBrandFilter;
+                const activeClasses = isActive 
+                    ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/30' 
+                    : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200';
+                
+                return `
+                    <button onclick="setBrandFilter('${brand}')" class="px-3.5 py-1.5 text-xs font-semibold rounded-full whitespace-nowrap transition-all ${activeClasses}">
+                        ${brand}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function setBrandFilter(brand) {
+            activeBrandFilter = brand;
+            renderBrandFilters();
+            renderProducts();
+        }
+
+        // SEARCH HANDLERS
+        function handleSearch() {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            renderProducts();
+        }
+
+        function handleSearchMobile() {
+            searchQuery = document.getElementById('searchInputMobile').value.toLowerCase();
+            renderProducts();
+        }
+
+        function resetFilters() {
+            activeBrandFilter = 'Semua';
+            searchQuery = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchInputMobile').value = '';
+            renderBrandFilters();
+            renderProducts();
+        }
+
+        // RENDER PRODUCT CATALOG GRID
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const emptyState = document.getElementById('emptyState');
+            const counter = document.getElementById('productCount');
+
+            // Filter Products Logic
+            const filtered = products.filter(product => {
+                const matchesBrand = activeBrandFilter === 'Semua' || product.brand.toLowerCase() === activeBrandFilter.toLowerCase();
+                const matchesSearch = product.name.toLowerCase().includes(searchQuery) || 
+                                      product.brand.toLowerCase().includes(searchQuery) ||
+                                      product.specs.toLowerCase().includes(searchQuery);
+                return matchesBrand && matchesSearch;
+            });
+
+            counter.innerText = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(product => {
+                const stockBadge = product.stock === 'Tersedia' 
+                    ? '<span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-700 rounded-md">Ready Stock</span>'
+                    : '<span class="px-2 py-0.5 text-[10px] font-bold bg-amber-100 text-amber-700 rounded-md">'+product.stock+'</span>';
+
+                const fallbackImg = `https://placehold.co/600x600/1e293b/ffffff?text=${encodeURIComponent(product.name)}`;
+                const imgSrc = product.image ? product.image : fallbackImg;
+
+                return `
+                    <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                        <!-- Image & Stock Badge -->
+                        <div>
+                            <div class="relative w-full aspect-square overflow-hidden bg-slate-100">
+                                <img src="${imgSrc}" onerror="this.src='${fallbackImg}'" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute top-3 left-3">
+                                    ${stockBadge}
+                                </div>
+                                <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-0.5 rounded text-[10px] font-bold text-slate-600 shadow-sm">
+                                    ${product.brand}
+                                </div>
+                            </div>
+                            
+                            <!-- Detail HP -->
+                            <div class="p-4">
+                                <h3 class="font-bold text-slate-800 text-base line-clamp-1 group-hover:text-blue-600 transition-colors">${product.name}</h3>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed min-h-[32px]">${product.specs}</p>
+                                <div class="mt-3">
+                                    <span class="text-xs text-slate-400 block font-medium">Harga Spesi@l</span>
+                                    <span class="text-lg font-extrabold text-blue-600">${formatRupiah(product.price)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button WA -->
+                        <div class="p-4 pt-0">
+                            <button onclick="orderViaWA('${product.name}', '${product.price}', '${product.brand}')" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-sm shadow-emerald-500/20 transition-all">
+                                <i class="fa-brands fa-whatsapp text-lg"></i>
+                                <span>Beli via WhatsApp</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // GENERATE AUTOMATIC WHATSAPP ORDER LINK
+        function orderViaWA(productName, price, brand) {
+            const formattedPrice = formatRupiah(price);
+            const textMessage = `Halo GadgetZone, saya berminat untuk membeli smartphone ini:\n\n` +
+                                `📱 *Produk:* ${productName}\n` +
+                                `🏷️ *Merek:* ${brand}\n` +
+                                `💰 *Harga:* ${formattedPrice}\n\n` +
+                                `Apakah stok ini masih tersedia? Dan tolong infokan prosedur pembayaran serta pengirimannya. Terima kasih!`;
+            
+            const encodedText = encodeURIComponent(textMessage);
+            const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodedText}`;
+            
+            window.open(waUrl, '_blank');
+        }
+
+        // FORM TAMBAH PRODUK HANDLER
+        function handleAddProduct(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('phoneName').value.trim();
+            const brand = document.getElementById('phoneBrand').value;
+            const price = parseFloat(document.getElementById('phonePrice').value);
+            const stock = document.getElementById('phoneStock').value;
+            const specs = document.getElementById('phoneSpecs').value.trim();
+            const image = document.getElementById('phoneImage').value.trim();
+
+            if (!name || isNaN(price) || !specs) {
+                showToast("Mohon lengkapi formulir dengan benar", "error");
+                return;
+            }
+
+            const newProduct = {
+                id: Date.now(),
+                name: name,
+                brand: brand,
+                price: price,
+                specs: specs,
+                stock: stock,
+                image: image || ''
+            };
+
+            products.unshift(newProduct);
+            saveProductsToStorage();
+            
+            // Reset Form & Update UI
+            document.getElementById('addProductForm').reset();
+            renderBrandFilters();
+            renderProducts();
+            
+            showToast(`Berhasil menambah ${name} ke etalase!`, "success");
+            closeModal('adminModal');
+        }
+
+        // DELETE PRODUCT HANDLER
+        function deleteProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            if (confirm(`Apakah Anda yakin ingin menghapus "${product.name}" dari etalase?`)) {
+                products = products.filter(p => p.id !== id);
+                saveProductsToStorage();
+                renderBrandFilters();
+                renderProducts();
+                renderManageList();
+                showToast("Produk berhasil dihapus dari etalase", "info");
+            }
+        }
+
+        // RENDER MANAGEMENT LIST IN ADMIN MODAL
+        function renderManageList() {
+            const container = document.getElementById('manageProductsList');
+            if (products.length === 0) {
+                container.innerHTML = `<p class="text-xs text-center text-slate-400 py-6">Tidak ada produk di etalase saat ini.</p>`;
+                return;
+            }
+
+            container.innerHTML = products.map(product => `
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-slate-200 overflow-hidden flex-shrink-0">
+                            <img src="${product.image || 'https://placehold.co/100?text=HP'}" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-800 line-clamp-1">${product.name}</h4>
+                            <p class="text-[11px] text-blue-600 font-semibold">${formatRupiah(product.price)}</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteProduct(${product.id})" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors">
+                        <i class="fa-regular fa-trash-can"></i> Hapus
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // SWITCH ADMIN MODAL TABS
+        function switchAdminTab(tab) {
+            const form = document.getElementById('addProductForm');
+            const manageList = document.getElementById('manageProductsList');
+            const tabAddBtn = document.getElementById('tabAddBtn');
+            const tabManageBtn = document.getElementById('tabManageBtn');
+
+            if (tab === 'add') {
+                form.classList.remove('hidden');
+                manageList.classList.add('hidden');
+                tabAddBtn.className = "px-4 py-2 text-xs sm:text-sm font-semibold border-b-2 border-blue-600 text-blue-600";
+                tabManageBtn.className = "px-4 py-2 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700";
+            } else {
+                form.classList.add('hidden');
+                manageList.classList.remove('hidden');
+                tabAddBtn.className = "px-4 py-2 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700";
+                tabManageBtn.className = "px-4 py-2 text-xs sm:text-sm font-semibold border-b-2 border-blue-600 text-blue-600";
+                renderManageList();
+            }
+        }
+
+        // MODAL TOGGLERS
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            if(modalId === 'adminModal') {
+                switchAdminTab('add');
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // COPY TO CLIPBOARD HELPER
+        function copyToClipboard(text, label) {
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            showToast(`${label} (${text}) tersalin!`, "success");
+        }
+
+        // CUSTOM TOAST NOTIFICATIONS
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            let bgClass = "bg-slate-800 text-white";
+            let iconClass = "fa-circle-info";
+
+            if (type === 'success') {
+                bgClass = "bg-emerald-600 text-white";
+                iconClass = "fa-circle-check";
+            } else if (type === 'error') {
+                bgClass = "bg-rose-600 text-white";
+                iconClass = "fa-triangle-exclamation";
+            }
+
+            toast.className = `flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg ${bgClass} text-xs font-medium transition-all duration-300 transform translate-y-2 opacity-0`;
+            toast.innerHTML = `<i class="fa-solid ${iconClass}"></i><span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+```
